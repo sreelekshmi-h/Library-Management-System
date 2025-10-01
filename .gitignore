@@ -1,0 +1,16 @@
+# Ignore compiled class files
+bin/
+*.class
+
+# Ignore library jars (optional)
+lib/*.jar
+
+# IDE files
+*.iml
+*.idea/
+*.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+config.properties
