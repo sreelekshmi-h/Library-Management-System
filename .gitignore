@@ -1,0 +1,20 @@
+# Compiled Java files
+*.class
+*.jar
+
+# Eclipse/IntelliJ/VS Code project files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Local config or runtime files
+*.log
+config.properties
+bin/
+lib/
+
+# AppData / temporary system files
+AppData/
