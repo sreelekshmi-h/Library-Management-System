@@ -82,7 +82,8 @@ public class TestMain {
         // 🔹 Extra: Directly testing core model classes
         // ------------------------------------------------
         User student = new User(101, "Alice", "alice@example.com", "pass123", "student");
-        Librarian librarian = new Librarian(201, "Bob", "bob@example.com", "lib123");
+        Librarian librarian = new Librarian(201, "Bob", "bob@example.com", "lib123", "E001");
+
 
         System.out.println("Created User: " + student.getName() + " (" + student.getRole() + ")");
         System.out.println("Created Librarian: " + librarian.getName() + " (" + librarian.getEmail() + ")");
