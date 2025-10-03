@@ -3,6 +3,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import model.User;
+import model.Student;   
+import model.Librarian;
+
+
 public class UserDAO {
 
     public static boolean registerUser(String name, String email, String password, String role) {
@@ -23,19 +28,34 @@ public class UserDAO {
         }
     }
 
-    public static boolean login(String email, String password) {
-        String sql = "SELECT * FROM users WHERE email=? AND password=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+   public static User login(String email, String password) {
+    String sql = "SELECT * FROM users WHERE email=? AND password=?";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next();
+        stmt.setString(1, email);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        if (rs.next()) {
+            String role = rs.getString("role");
+            User user;
+            if (role.equalsIgnoreCase("student")) {
+                user = new Student();
+            } else {
+                user = new Librarian();
+            }
+            user.setUserID(rs.getInt("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(email);
+            return user;
         }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return null;
+}
+
+    
 }
