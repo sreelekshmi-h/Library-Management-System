@@ -1,6 +1,14 @@
 package controller;
 import java.util.List;
 
+import dao.UserDAO;
+import dao.BookDAO;
+import dao.TransactionDAO;
+
+import model.Book;
+import model.Transaction;
+
+
 public class LibrarySystem {
 
     // Register a new user
