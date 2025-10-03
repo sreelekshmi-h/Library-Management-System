@@ -11,6 +11,9 @@ import dao.UserDAO;
 import dao.BookDAO;
 import dao.TransactionDAO;
 
+import dao.DBConnection;
+
+
 public class TestMain {
     public static void main(String[] args) {
 
@@ -27,8 +30,9 @@ public class TestMain {
         System.out.println("User registered: " + reg);
 
         // Test login
-        boolean login = UserDAO.login("sree@example.com", "1234");
-        System.out.println("Login successful: " + login);
+        User user = UserDAO.login("sree@example.com", "1234");
+        System.out.println("Login successful: " + (user != null));
+
 
         // Test adding a book
         boolean bookAdded = BookDAO.addBook("Java Programming", "Author Name", "Programming");
