@@ -21,6 +21,10 @@ public class User {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
+    // Aliases for compatibility with DAO/TestMain
+    public int getUserID() { return id; }
+    public void setUserID(int id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

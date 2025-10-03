@@ -10,7 +10,7 @@ import model.Book;
 public class BookDAO {
 
     public static boolean addBook(String title, String author, String category) {
-        String sql = "INSERT INTO books(title, author, category) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO books(title, author, category, availability) VALUES(?, ?, ?, 1)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -26,23 +26,21 @@ public class BookDAO {
         }
     }
 
-    // You can add methods like searchBook, updateBook, removeBook here
-
-    
-    // Method to search books by title (partial match)
-    public static List<Book> searchBook(String title) {
+    public static List<Book> searchBook(String keyword) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE title LIKE ?";
-        
+        String sql = "SELECT * FROM books WHERE title LIKE ? OR author LIKE ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, "%" + title + "%"); // Partial match using LIKE
+            String search = "%" + keyword + "%";
+            stmt.setString(1, search);
+            stmt.setString(2, search);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Book book = new Book();
-                book.setId(rs.getInt("id")); // Assuming your table has an 'id' column
+                book.setId(rs.getInt("bookID"));  // ✅ use correct column
                 book.setTitle(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));
                 book.setCategory(rs.getString("category"));
@@ -55,43 +53,40 @@ public class BookDAO {
 
         return books;
     }
-    //method to updateBook
-    public static boolean updateBook(int id, String newTitle, String newAuthor, String newCategory) {
-    String sql = "UPDATE books SET title = ?, author = ?, category = ? WHERE id = ?";
-    
-    try (Connection conn = DBConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setString(1, newTitle);
-        stmt.setString(2, newAuthor);
-        stmt.setString(3, newCategory);
-        stmt.setInt(4, id);
+    public static boolean updateBook(int bookID, String newTitle, String newAuthor, String newCategory) {
+        String sql = "UPDATE books SET title = ?, author = ?, category = ? WHERE bookID = ?";
 
-        int rowsUpdated = stmt.executeUpdate();
-        return rowsUpdated > 0; // returns true if at least one row was updated
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
+            stmt.setString(1, newTitle);
+            stmt.setString(2, newAuthor);
+            stmt.setString(3, newCategory);
+            stmt.setInt(4, bookID);
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean removeBook(int bookID) {
+        String sql = "DELETE FROM books WHERE bookID = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, bookID);
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
-//method to removeBook
-public static boolean removeBook(int id) {
-    String sql = "DELETE FROM books WHERE id = ?";
-    
-    try (Connection conn = DBConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-        stmt.setInt(1, id);
-        int rowsDeleted = stmt.executeUpdate();
-        return rowsDeleted > 0; // returns true if a row was deleted
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
-}
-
-
-}
-

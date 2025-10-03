@@ -46,9 +46,12 @@ public class UserDAO {
             } else {
                 user = new Librarian();
             }
-            user.setUserID(rs.getInt("id"));
+            // Use the correct column name and setter
+            user.setId(rs.getInt("userID"));
             user.setName(rs.getString("name"));
-            user.setEmail(email);
+            user.setEmail(rs.getString("email")); // safer than using the input email
+            user.setRole(role);
+
             return user;
         }
 
@@ -57,6 +60,7 @@ public class UserDAO {
     }
     return null;
 }
+
 
     
 }
