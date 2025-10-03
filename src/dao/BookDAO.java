@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Book;
+
 public class BookDAO {
 
     public static boolean addBook(String title, String author, String category) {
